@@ -108,9 +108,18 @@ export default function DashboardPage() {
     const cancelled = appointments.filter(a => a.status === "cancelled");
     const completed = appointments.filter(a => a.status === "completed");
     const todayAppts = confirmed.filter(a => new Date(a.start_time).toDateString() === todayStr);
+
+    // Start of today — show all of today + future confirmed appointments
+    const startOfToday = new Date(now);
+    startOfToday.setHours(0, 0, 0, 0);
     const upcoming = confirmed
-        .filter(a => new Date(a.start_time) > now)
+        .filter(a => new Date(a.start_time) >= startOfToday)
         .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime())
+        .slice(0, 5);
+
+    // Most recent bookings (any status) for the activity feed
+    const recentBookings = [...appointments]
+        .sort((a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime())
         .slice(0, 5);
 
     // Revenue estimate from completed appts (service price lookup)
@@ -228,6 +237,12 @@ export default function DashboardPage() {
                         <div className="py-12 text-center text-gray-400">
                             <IconCalendar size={40} className="mx-auto mb-3 opacity-30" />
                             <p className="font-medium">No upcoming appointments</p>
+                            {recentBookings.length > 0 && (
+                                <p className="text-xs mt-1 text-gray-300">
+                                    {recentBookings.length} booking{recentBookings.length !== 1 ? "s" : ""} in history &mdash;{" "}
+                                    <Link href="/dashboard/bookings" className="text-[var(--primary)] hover:underline font-bold">view all</Link>
+                                </p>
+                            )}
                         </div>
                     ) : (
                         <div className="divide-y divide-gray-50">
@@ -309,7 +324,7 @@ export default function DashboardPage() {
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className="px-6 py-5 border-b border-gray-50 flex items-center gap-2">
                         <span className="inline-flex items-center justify-center w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" />
-                        <h2 className="font-bold text-gray-900 text-lg">Today's Schedule</h2>
+                        <h2 className="font-bold text-gray-900 text-lg">Today&apos;s Schedule</h2>
                         <span className="text-sm text-gray-400 font-medium">({todayAppts.length} appointment{todayAppts.length !== 1 ? "s" : ""})</span>
                     </div>
                     <div className="overflow-x-auto">

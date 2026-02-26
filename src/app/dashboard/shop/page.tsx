@@ -36,6 +36,7 @@ export default function ShopManagerPage() {
         if (activeTab === "products") {
             fetchData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeTab]);
 
     const fetchData = async () => {
