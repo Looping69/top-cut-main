@@ -27,11 +27,11 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   const nextReview = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % reviews.length);
   };
-  
+
   const prevReview = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + reviews.length) % reviews.length);
   };
@@ -177,20 +177,20 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
         time: Date.now() - 5 * 24 * 60 * 60 * 1000
       }
     ];
-    
+
     // Simulate API delay for smoother transition
     const timer = setTimeout(() => {
       setReviews(realReviews);
       setLoading(false);
     }, 500);
-    
+
     return () => clearTimeout(timer);
   }, [placeId, apiKey]);
 
   const renderStars = (rating: number) => {
     return Array(5).fill(0).map((_, i) => (
-      i < rating 
-        ? <IconStarFilled key={i} className="text-[var(--accent)] w-5 h-5" /> 
+      i < rating
+        ? <IconStarFilled key={i} className="text-[var(--accent)] w-5 h-5" />
         : <IconStar key={i} className="text-gray-300 w-5 h-5" />
     ));
   };
@@ -207,10 +207,8 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
     <section className="relative py-16 md:py-24 bg-[var(--primary)] overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{ 
-          backgroundImage: "url('/images/tree-pattern.png')", 
-          backgroundSize: "300px",
-          backgroundRepeat: "repeat",
+        <div className="absolute inset-0" style={{
+          backgroundColor: "#ffffff",
           opacity: 0.1
         }}></div>
       </div>
@@ -228,8 +226,8 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
               Google Reviews
             </span>
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             className="text-3xl md:text-4xl font-bold mb-4 text-white"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -238,8 +236,8 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
           >
             What Our Clients Say on Google
           </motion.h2>
-          
-          <motion.p 
+
+          <motion.p
             className="text-gray-100 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -248,7 +246,7 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
           >
             Read authentic reviews from our satisfied customers on Google.
           </motion.p>
-          
+
           {/* Overall Rating Display */}
           <motion.div
             className="flex flex-col items-center justify-center mt-8 mb-12"
@@ -264,7 +262,7 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
             <p className="text-gray-200">Based on {reviews.length} reviews</p>
           </motion.div>
         </div>
-        
+
         {loading ? (
           <div className="flex justify-center items-center h-40">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
@@ -277,13 +275,13 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
           <div className="relative max-w-4xl mx-auto">
             {/* Apply swipe handlers */}
             <div className="overflow-hidden" {...swipeHandlers}>
-              <div 
+              <div
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${activeIndex * 100}%)` }}
               >
                 {reviews.map((review, index) => (
                   <div key={index} className="w-full flex-shrink-0 px-4">
-                    <motion.div 
+                    <motion.div
                       className="bg-white rounded-xl shadow-lg p-6 md:p-8 hover:shadow-xl transition-shadow"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -298,18 +296,18 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
                           {renderStars(review.rating)}
                         </div>
                       </div>
-                      
+
                       <p className="text-gray-700 text-lg mb-6 italic leading-relaxed">
                         &quot;{review.text}&quot;
                       </p>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <div className="w-12 h-12 rounded-full overflow-hidden bg-[var(--primary)] flex items-center justify-center text-white font-bold shadow-md">
                             {review.profile_photo_url ? (
-                              <img 
-                                src={review.profile_photo_url} 
-                                alt={review.author_name} 
+                              <img
+                                src={review.profile_photo_url}
+                                alt={review.author_name}
                                 className="w-full h-full object-cover"
                                 referrerPolicy="no-referrer"
                               />
@@ -328,17 +326,17 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
                 ))}
               </div>
             </div>
-            
+
             {/* Navigation Buttons - Hidden on mobile */}
             <div className="hidden md:block">
-              <button 
+              <button
                 onClick={prevReview}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white p-3 rounded-full shadow-lg hover:shadow-xl focus:outline-none z-10 text-[var(--primary)] hover:text-[var(--primary-dark)] transition-all duration-300 transform hover:scale-105"
                 aria-label="Previous review"
               >
                 <IconChevronLeft size={24} />
               </button>
-              <button 
+              <button
                 onClick={nextReview}
                 className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white p-3 rounded-full shadow-lg hover:shadow-xl focus:outline-none z-10 text-[var(--primary)] hover:text-[var(--primary-dark)] transition-all duration-300 transform hover:scale-105"
                 aria-label="Next review"
@@ -346,30 +344,29 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
                 <IconChevronRight size={24} />
               </button>
             </div>
-            
+
             {/* Mobile swipe indicator - visible only on small screens */}
             <div className="md:hidden text-center mt-4">
               <p className="text-white/70 text-sm flex items-center justify-center">
                 <IconChevronLeft size={16} className="mr-1" /> Swipe to navigate <IconChevronRight size={16} className="ml-1" />
               </p>
             </div>
-            
+
             {/* Dots Indicator - Shown on all devices */}
             <div className="flex justify-center mt-8 space-x-2">
               {reviews.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`h-3 rounded-full transition-all duration-300 ${
-                    index === activeIndex ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/70 w-3'
-                  }`}
+                  className={`h-3 rounded-full transition-all duration-300 ${index === activeIndex ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/70 w-3'
+                    }`}
                   aria-label={`Go to review ${index + 1}`}
                 />
               ))}
             </div>
           </div>
         )}
-        
+
         {/* Call to Action */}
         <motion.div
           className="text-center mt-12"
@@ -378,16 +375,16 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <a 
-            href={GOOGLE_BUSINESS_PROFILE_URL} 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href={GOOGLE_BUSINESS_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-3 bg-white text-[var(--primary-dark)] font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             See All Google Reviews
           </a>
         </motion.div>
-        
+
         {/* Review CTA Card */}
         <motion.div
           className="mt-16 bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg max-w-2xl mx-auto border border-white/20"
@@ -401,23 +398,23 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
             <p className="text-gray-100 mb-6">
               We appreciate your feedback! Click the stars below to rate us on Google.
             </p>
-            
+
             <div className="flex justify-center mb-6">
-              <a 
-                href={GOOGLE_BUSINESS_PROFILE_URL} 
-                target="_blank" 
+              <a
+                href={GOOGLE_BUSINESS_PROFILE_URL}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex gap-1"
               >
                 {Array(5).fill(0).map((_, i) => (
-                  <IconStarFilled 
-                    key={i} 
-                    className="w-10 h-10 text-[var(--accent)] hover:scale-110 transition-transform cursor-pointer" 
+                  <IconStarFilled
+                    key={i}
+                    className="w-10 h-10 text-[var(--accent)] hover:scale-110 transition-transform cursor-pointer"
                   />
                 ))}
               </a>
             </div>
-            
+
             <p className="text-sm text-gray-200">
               Your review helps others find quality tree services they can trust.
             </p>

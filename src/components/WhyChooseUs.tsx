@@ -50,9 +50,7 @@ export function WhyChooseUs() {
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: "url('/images/tree-pattern.png')",
-          backgroundSize: "300px",
-          backgroundRepeat: "repeat",
+          backgroundColor: "var(--primary-dark)",
           opacity: 0.1
         }}></div>
       </div>

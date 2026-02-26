@@ -213,8 +213,8 @@ export function Footer() {
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400">
           <p>© {currentYear} Top Cut. All rights reserved.</p>
           <div className="mt-4 md:mt-0 flex space-x-4">
-            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

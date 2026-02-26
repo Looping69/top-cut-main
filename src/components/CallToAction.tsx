@@ -11,8 +11,8 @@ export function CallToAction() {
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{
-          backgroundImage: "url('/images/cta-bg.jpg')",
-          filter: "brightness(0.3)"
+          filter: "brightness(0.3)",
+          backgroundColor: "var(--primary-dark)"
         }}
       />
 
