@@ -15,7 +15,7 @@ export async function encoreFetch(path: string, options: RequestInit = {}) {
     };
 
     if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+        headers["X-Auth-Token"] = token;
     }
 
     const response = await fetch(url, {
