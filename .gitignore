@@ -121,3 +121,5 @@ node_modules/**
 build/
 dist/
 out/
+
+.vercel
