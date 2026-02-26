@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Container } from "./Container";
 import { motion } from "framer-motion";
 import { IconStar, IconStarFilled, IconQuote, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
@@ -305,12 +306,16 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
                         <div className="flex items-center">
                           <div className="w-12 h-12 rounded-full overflow-hidden bg-[var(--primary)] flex items-center justify-center text-white font-bold shadow-md">
                             {review.profile_photo_url ? (
-                              <img
-                                src={review.profile_photo_url}
-                                alt={review.author_name}
-                                className="w-full h-full object-cover"
-                                referrerPolicy="no-referrer"
-                              />
+                              <div className="relative w-full h-full">
+                                <Image
+                                  src={review.profile_photo_url}
+                                  alt={review.author_name}
+                                  fill
+                                  className="object-cover"
+                                  unoptimized
+                                  referrerPolicy="no-referrer"
+                                />
+                              </div>
                             ) : (
                               review.author_name.charAt(0)
                             )}

@@ -77,9 +77,9 @@ export function Footer() {
                 <IconLeaf className="text-[var(--accent)] w-4 h-4 mr-1" />
                 <span className="text-white text-xs">Eco-Friendly</span>
               </div>
-              <div className="flex items-center bg-white bg-opacity-10 px-3 py-1 rounded-full">
-                <IconClock className="text-[var(--accent)] w-4 h-4 mr-1" />
-                <span className="text-white text-xs">15+ Years</span>
+              <div className="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full mt-2 sm:mt-0">
+                <IconClock size={16} className="text-[var(--accent)]" />
+                <span className="text-white text-xs">4+ Years</span>
               </div>
             </div>
 

@@ -11,6 +11,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
+  { name: "Shop", href: "/shop" },
   { name: "Gallery", href: "/gallery" },
   { name: "Testimonials", href: "/testimonials" },
   { name: "About", href: "/about" },

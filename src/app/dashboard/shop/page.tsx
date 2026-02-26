@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { IconSearch, IconPlus, IconEdit, IconTrash, IconLoader2, IconLayoutGrid, IconPackage } from "@tabler/icons-react";
 import { encoreFetch } from "@/lib/encore";
 import { ProductDialog } from "@/components/dashboard/ProductDialog";
@@ -192,8 +193,8 @@ export default function ShopManagerPage() {
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
                                                         {product.image_url ? (
-                                                            <div className="h-10 w-10 rounded-lg bg-gray-100 overflow-hidden border border-gray-200">
-                                                                <img src={product.image_url} alt={product.name} className="h-full w-full object-cover" />
+                                                            <div className="relative h-10 w-10 rounded-lg bg-gray-100 overflow-hidden border border-gray-200">
+                                                                <Image src={product.image_url} alt={product.name} fill className="object-cover" unoptimized />
                                                             </div>
                                                         ) : (
                                                             <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200 text-gray-400 text-xs font-bold">
