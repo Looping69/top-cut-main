@@ -9,7 +9,6 @@ import { CallToAction } from "@/components/CallToAction";
 import { ContactBlock } from "@/components/ContactBlock";
 import { AnimatedLeaves } from "@/components/AnimatedLeaves";
 import { Gallery } from "@/components/Gallery";
-import { GoogleReviews } from "@/components/GoogleReviews";
 import dynamic from "next/dynamic";
 
 // Dynamically import components that are lower priority
@@ -31,44 +30,44 @@ const DynamicWhyChooseUs = dynamic(() => import("@/components/WhyChooseUs").then
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
     // Check if we're on mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     // Initial check
     checkMobile();
-    
+
     // Add event listener for window resize
     window.addEventListener('resize', checkMobile);
-    
+
     // Cleanup
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-  
+
   return (
     <>
       {/* Only show animated leaves on desktop for performance */}
       {!isMobile && <AnimatedLeaves />}
-      
+
       <Hero />
-      
+
       {/* Google Reviews section - Featured prominently as requested */}
-      <DynamicGoogleReviews 
+      <DynamicGoogleReviews
         placeId={process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID || ""}
         apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
       />
-      
+
       <Services />
-      
+
       {/* About section (Why Choose Us) */}
       <DynamicWhyChooseUs />
-      
+
       {/* Gallery section */}
       <DynamicGallery />
-      
+
       {/* Add the contact block */}
       <ContactBlock />
       <CallToAction />
