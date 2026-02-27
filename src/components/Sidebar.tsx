@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconLayoutDashboard } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -16,7 +16,7 @@ const navItems = [
   { name: "Testimonials", href: "/testimonials" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
-  { name: "Dashboard", href: "/dashboard" },
+  { name: "Dashboard", href: "/dashboard", icon: IconLayoutDashboard },
 ];
 
 export function Sidebar() {
@@ -58,12 +58,13 @@ export function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
+                title={item.name}
                 className={`font-semibold text-base transition-colors duration-200 hover:text-[var(--primary)] relative ${pathname === item.href
                   ? "text-[var(--primary)] font-bold border-b-2 border-[var(--accent)] pb-1"
                   : "text-gray-700 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-[var(--accent)] after:transition-all after:duration-300"
                   }`}
               >
-                {item.name}
+                {item.icon ? <item.icon size={22} /> : item.name}
               </Link>
             ))}
             <Link href="/quote" className="btn-primary shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
@@ -99,19 +100,19 @@ export function Sidebar() {
               className="fixed right-0 top-0 h-full w-72 bg-gradient-to-b from-white to-green-50 shadow-2xl p-5"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex justify-between items-center mb-8 border-b border-green-100 pb-4">
+              <div className="flex justify-between items-center mb-4 border-b border-green-100 pb-3">
                 <Link href="/" className="flex items-center space-x-2 group">
-                  <div className="relative h-12 w-12 bg-gradient-to-r from-[var(--primary-dark)] to-[var(--primary)] rounded-full p-1 shadow-xl group-hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105">
+                  <div className="relative h-9 w-9 bg-gradient-to-r from-[var(--primary-dark)] to-[var(--primary)] rounded-full p-1 shadow-xl group-hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105">
                     <Image
                       src="/topcut.png"
                       alt="Top Cut Logo"
-                      width={40}
-                      height={40}
+                      width={32}
+                      height={32}
                       className="object-contain"
                     />
                   </div>
                   <div>
-                    <span className="text-xl font-extrabold tracking-tight">
+                    <span className="text-base font-extrabold tracking-tight">
                       <span className="text-[var(--accent)]">Top</span> <span className="text-[var(--primary-dark)]">Cut</span>
                     </span>
                     <span className="block text-sm text-[var(--primary-dark)] mt-0.5">Tree Felling & Landscaping</span>
@@ -127,14 +128,14 @@ export function Sidebar() {
                 </button>
               </div>
 
-              <nav className="flex flex-col space-y-4">
+              <nav className="flex flex-col space-y-1">
                 {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`font-semibold py-2 transition-colors duration-200 ${pathname === item.href
-                      ? "text-[var(--primary)] font-bold border-l-4 border-[var(--accent)] pl-4 bg-green-50 rounded-r-lg"
-                      : "text-gray-700 hover:text-[var(--primary)] hover:bg-green-50 hover:border-l-4 hover:border-[var(--accent)] pl-4 rounded-r-lg"
+                    className={`text-sm font-semibold py-1.5 transition-colors duration-200 ${pathname === item.href
+                      ? "text-[var(--primary)] font-bold border-l-4 border-[var(--accent)] pl-3 bg-green-50 rounded-r-lg"
+                      : "text-gray-700 hover:text-[var(--primary)] hover:bg-green-50 hover:border-l-4 hover:border-[var(--accent)] pl-3 rounded-r-lg"
                       }`}
                     onClick={toggleSidebar}
                   >
@@ -143,24 +144,24 @@ export function Sidebar() {
                 ))}
                 <Link
                   href="/quote"
-                  className="btn-primary text-center mt-4 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  className="btn-primary text-center text-sm mt-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                   onClick={toggleSidebar}
                 >
                   Get a Free Quote
                 </Link>
               </nav>
 
-              <div className="absolute bottom-8 left-5 right-5">
-                <div className="bg-gradient-to-r from-green-light to-[var(--primary-light)] p-5 rounded-lg shadow-lg border border-[var(--accent)] transform hover:scale-102 transition-all duration-300">
-                  <p className="text-sm text-[var(--primary-dark)] font-bold mb-2">EMERGENCY TREE SERVICE</p>
-                  <a href="tel:+27788747327" className="text-[var(--primary)] font-bold block mt-1 flex items-center text-lg">
-                    <div className="bg-[var(--accent)] p-2 rounded-full mr-3 shadow-md">
-                      <FaPhoneAlt className="text-white" />
-                    </div>
-                    +27 78 874 7327
-                  </a>
-                  <p className="text-xs text-gray-600 mt-2">Available 24/7 for urgent tree hazards</p>
-                </div>
+              <div className="absolute bottom-4 left-5 right-5">
+                <a
+                  href="tel:+27788747327"
+                  className="flex items-center gap-2 bg-[var(--accent)]/10 border border-[var(--accent)]/30 rounded-lg px-3 py-2 hover:bg-[var(--accent)]/20 transition-colors"
+                >
+                  <div className="bg-[var(--accent)] p-1.5 rounded-md flex-shrink-0">
+                    <FaPhoneAlt className="text-white" size={12} />
+                  </div>
+                  <span className="text-sm font-bold text-[var(--primary-dark)]">+27 78 874 7327</span>
+                  <span className="text-xs text-gray-500 ml-auto">24/7</span>
+                </a>
               </div>
             </motion.div>
           </motion.div>

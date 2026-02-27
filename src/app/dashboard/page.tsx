@@ -51,21 +51,23 @@ function StatCard({
     loading?: boolean;
 }) {
     return (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${color}`}>
-                <Icon size={22} className="text-white" />
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider leading-tight">{label}</p>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${color}`}>
+                    <Icon size={16} className="text-white" />
+                </div>
             </div>
-            <div className="min-w-0">
-                <p className="text-sm text-gray-500 font-medium">{label}</p>
-                {loading ? (
-                    <div className="h-8 w-16 bg-gray-100 animate-pulse rounded-lg mt-1" />
-                ) : (
-                    <p className="text-3xl font-bold text-gray-900 mt-0.5">{value}</p>
-                )}
-                {sub && !loading && (
-                    <p className="text-xs text-gray-400 mt-1">{sub}</p>
-                )}
-            </div>
+            {loading ? (
+                <div className="h-7 w-24 bg-gray-100 animate-pulse rounded-lg" />
+            ) : (
+                <p className="text-2xl font-black text-gray-900 tabular-nums whitespace-nowrap tracking-tight leading-none">
+                    {value}
+                </p>
+            )}
+            {sub && !loading && (
+                <p className="text-xs text-gray-400 font-medium">{sub}</p>
+            )}
         </div>
     );
 }
@@ -150,7 +152,7 @@ export default function DashboardPage() {
         });
 
     const formatRand = (cents: number) =>
-        `R ${(cents / 100).toLocaleString("en-ZA", { minimumFractionDigits: 0 })}`;
+        `R\u00A0${new Intl.NumberFormat("en-ZA", { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(cents / 100)}`;
 
     if (error) {
         return (
