@@ -1,0 +1,21 @@
+{
+    "name": "Top Cut Tree Felling",
+    "short_name": "Top Cut",
+    "description": "Professional Outdoor & Garden Services in South Africa",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#166534",
+    "icons": [
+        {
+            "src": "/topcut.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/topcut.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

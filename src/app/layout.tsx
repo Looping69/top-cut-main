@@ -32,6 +32,13 @@ export const metadata: Metadata = {
   },
   description: "Top Cut offers professional outdoor services, including tree care, greenhouse, wood sales, and specialized garden maintenance. Owner always on-site.",
   keywords: "tree felling, greenhouse, wood sales, garden services, pest control, weed control, South Africa",
+  manifest: "/manifest.json",
+  themeColor: "#166534",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({
@@ -57,6 +64,21 @@ export default function RootLayout({
         {/* Global floating WhatsApp button */}
         <FloatingWhatsAppClient />
         <JobCounter />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                  }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                  });
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
