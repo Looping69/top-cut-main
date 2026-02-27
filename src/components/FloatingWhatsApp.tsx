@@ -26,7 +26,7 @@ export function FloatingWhatsApp() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (pathname?.startsWith("/dashboard")) return null;
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/shop")) return null;
 
   const phoneNumber = "27788747327"; // Updated with correct phone number
   const message = "Hi! I'm interested in your tree services."; // Pre-filled message

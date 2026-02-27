@@ -567,7 +567,7 @@ function OrdersTab({ orders, loading }: { orders: ShopOrder[]; loading: boolean 
 }
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
-type TabId = "overview" | "orders" | "invoices" | "quotations" | "expenses";
+type TabId = h;
 
 const TABS: { id: TabId; label: string; icon: React.ElementType }[] = [
     { id: "overview", label: "Overview", icon: IconLayoutDashboard },
