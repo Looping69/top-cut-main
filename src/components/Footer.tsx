@@ -2,10 +2,14 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { IconBrandFacebook, IconBrandInstagram, IconBrandWhatsapp, IconMail, IconMapPin, IconPhone, IconLeaf, IconCertificate, IconClock } from "@tabler/icons-react";
 
 export function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  if (pathname?.startsWith("/dashboard")) return null;
 
   return (
     <footer className="bg-earth-gradient text-white">

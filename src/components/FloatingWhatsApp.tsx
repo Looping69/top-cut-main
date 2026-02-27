@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function FloatingWhatsApp() {
   const [isVisible, setIsVisible] = useState(false);
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-  const phoneNumber = "27788747327"; // Updated with correct phone number
-  const message = "Hi! I'm interested in your tree services."; // Pre-filled message
-  
+  const pathname = usePathname();
+
   useEffect(() => {
     // Show button after scrolling down a bit
     const handleScroll = () => {
@@ -21,13 +21,17 @@ export function FloatingWhatsApp() {
         setIsTooltipVisible(false);
       }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
+  if (pathname?.startsWith("/dashboard")) return null;
+
+  const phoneNumber = "27788747327"; // Updated with correct phone number
+  const message = "Hi! I'm interested in your tree services."; // Pre-filled message
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-  
+
   // Leaf animation variants
   const leafVariants = {
     animate: (i: number) => ({
@@ -41,7 +45,7 @@ export function FloatingWhatsApp() {
       },
     }),
   };
-  
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -58,25 +62,25 @@ export function FloatingWhatsApp() {
               <motion.div
                 key={i}
                 className="absolute"
-                style={{ 
-                  left: `${i * 15}px`, 
-                  top: `${i * 5}px` 
+                style={{
+                  left: `${i * 15}px`,
+                  top: `${i * 5}px`
                 }}
                 custom={i}
                 variants={leafVariants}
                 animate="animate"
               >
-                <Image 
-                  src="/images/leaf2.png" 
-                  alt="Leaf" 
-                  width={20} 
-                  height={20} 
+                <Image
+                  src="/images/leaf2.png"
+                  alt="Leaf"
+                  width={20}
+                  height={20}
                   className="opacity-80"
                 />
               </motion.div>
             ))}
           </div>
-          
+
           {/* Tooltip */}
           <AnimatePresence>
             {isTooltipVisible && (
@@ -92,7 +96,7 @@ export function FloatingWhatsApp() {
               </motion.div>
             )}
           </AnimatePresence>
-          
+
           {/* WhatsApp button */}
           <motion.a
             href={whatsappUrl}

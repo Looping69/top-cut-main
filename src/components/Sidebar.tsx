@@ -23,6 +23,8 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  if (pathname?.startsWith("/dashboard")) return null;
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
