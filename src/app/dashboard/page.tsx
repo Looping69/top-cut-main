@@ -11,6 +11,8 @@ import {
     IconTools,
     IconAlertCircle,
     IconChevronRight,
+    IconShoppingCart,
+    IconWallet,
 } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -80,18 +82,21 @@ function getStatusColor(status: string) {
 export default function DashboardPage() {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
+    const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function load() {
             try {
-                const [apptsData, typesData] = await Promise.all([
+                const [apptsData, typesData, ordersData] = await Promise.all([
                     encoreFetch("/appointments"),
                     encoreFetch("/service-types"),
+                    encoreFetch("/orders").catch(() => ({ orders: [] })),
                 ]);
                 setAppointments(apptsData.appointments ?? []);
                 setServiceTypes(typesData.serviceTypes ?? []);
+                setOrders(ordersData.orders ?? []);
             } catch (e: any) {
                 setError(e.message);
             } finally {
@@ -124,10 +129,16 @@ export default function DashboardPage() {
 
     // Revenue estimate from completed appts (service price lookup)
     const serviceMap = Object.fromEntries(serviceTypes.map(s => [s.id, s]));
-    const revenueEstimate = completed.reduce((sum, a) => {
+    const serviceRevenue = completed.reduce((sum, a) => {
         const svc = serviceMap[a.service_type_id];
         return sum + (svc?.price_cents ?? 0);
     }, 0);
+
+    const shopRevenue = orders
+        .filter(o => o.status === "paid" || o.status === "shipped" || o.status === "delivered")
+        .reduce((sum, o) => sum + (o.total_amount_cents ?? 0), 0);
+
+    const totalRevenue = serviceRevenue + shopRevenue;
 
     const formatTime = (iso: string) =>
         new Date(iso).toLocaleString("en-ZA", {
@@ -173,7 +184,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Stat Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                 <StatCard
                     icon={IconCalendarCheck}
                     label="Confirmed Bookings"
@@ -200,9 +211,25 @@ export default function DashboardPage() {
                 />
                 <StatCard
                     icon={IconTrendingUp}
-                    label="Est. Revenue"
-                    value={formatRand(revenueEstimate)}
+                    label="Service Revenue"
+                    value={formatRand(serviceRevenue)}
                     sub={`from ${completed.length} completed`}
+                    color="bg-indigo-500"
+                    loading={loading}
+                />
+                <StatCard
+                    icon={IconShoppingCart}
+                    label="Shop Revenue"
+                    value={formatRand(shopRevenue)}
+                    sub={`from ${orders.filter(o => o.status !== "pending" && o.status !== "cancelled").length} paid`}
+                    color="bg-purple-500"
+                    loading={loading}
+                />
+                <StatCard
+                    icon={IconWallet}
+                    label="Total Revenue"
+                    value={formatRand(totalRevenue)}
+                    sub="combined revenue"
                     color="bg-[var(--primary)]"
                     loading={loading}
                 />

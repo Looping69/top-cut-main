@@ -55,6 +55,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://topcut.co.zasrc\app\dashboard\financials\page.tsx</loc>
+    <lastmod>2026-02-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://topcut.co.zasrc\app\dashboard\page.tsx</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>weekly</changefreq>

@@ -8,7 +8,8 @@ import {
     IconSettings,
     IconArrowLeft,
     IconX,
-    IconLogout
+    IconLogout,
+    IconReceipt2
 } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth";
@@ -26,6 +27,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
         { href: "/dashboard", label: "Overview", icon: IconLayoutDashboard },
         { href: "/dashboard/shop", label: "Shop Manager", icon: IconShoppingCart },
         { href: "/dashboard/bookings", label: "Appointments", icon: IconCalendarEvent },
+        { href: "/dashboard/financials", label: "Financials & Orders", icon: IconReceipt2 },
     ];
 
     const sidebarContent = (
