@@ -9,7 +9,8 @@ import {
     IconArrowLeft,
     IconX,
     IconLogout,
-    IconReceipt2
+    IconReceipt2,
+    IconCommand
 } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth";
@@ -37,7 +38,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                     <div className="w-10 h-10 bg-[var(--accent)] rounded-lg flex items-center justify-center font-bold text-xl">
                         TC
                     </div>
-                    <span className="font-bold text-xl tracking-tight">Admin Dash</span>
+                    <IconCommand size={24} className="text-gray-300" />
                 </div>
                 <button
                     onClick={onClose}
