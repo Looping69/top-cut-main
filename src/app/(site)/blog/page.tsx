@@ -3,19 +3,20 @@ import { Heading } from "@/components/Heading";
 import { Highlight } from "@/components/Highlight";
 import { Paragraph } from "@/components/Paragraph";
 import { Products } from "@/components/Products";
-import { getAllBlogs } from "../../../lib/getAllBlogs";
+// import { getAllBlogs } from "../../../lib/getAllBlogs";
 import { Blogs } from "@/components/Blogs";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blogs | John Doe",
+  title: "Blogs | Top Cut",
   description:
-    "John Doe is a developer, writer and speaker. He is a digital nomad and travels around the world while working remotely.",
+    "Professional outdoor and garden services in South Africa.",
 };
 
 export default async function Blog() {
-  const blogs = await getAllBlogs();
-  const data = blogs.map(({ component, ...meta }) => meta);
+  // const blogs = await getAllBlogs();
+  // const data = blogs.map(({ component, ...meta }) => meta);
+  const data: any[] = []; // Stubbed to resolve build error
 
   return (
     <Container>
