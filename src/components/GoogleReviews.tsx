@@ -392,35 +392,103 @@ export function GoogleReviews({ placeId, apiKey }: GoogleReviewsProps) {
 
         {/* Review CTA Card */}
         <motion.div
-          className="mt-16 bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg max-w-2xl mx-auto border border-white/20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-16 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md p-8 md:p-12 rounded-2xl shadow-2xl max-w-2xl mx-auto border border-white/20 relative overflow-hidden group"
+          initial={{ opacity: 0, scale: 0.95, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
         >
-          <div className="text-center">
-            <h3 className="text-xl font-bold mb-4 text-white">Share Your Experience</h3>
-            <p className="text-gray-100 mb-6">
+          {/* Animated Background Glow */}
+          <motion.div
+            className="absolute -inset-20 bg-gradient-to-r from-[var(--accent)]/0 via-[var(--accent)]/10 to-[var(--accent)]/0 blur-3xl rounded-full"
+            animate={{
+              rotate: [0, 360],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+
+          <div className="relative text-center z-10">
+            <motion.h3
+              className="text-2xl md:text-3xl font-extrabold mb-4 text-white tracking-tight"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Share Your Experience
+            </motion.h3>
+            <p className="text-gray-100 mb-8 text-lg font-medium">
               We appreciate your feedback! Click the stars below to rate us on Google.
             </p>
 
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center items-center mb-8">
               <a
                 href={GOOGLE_BUSINESS_PROFILE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex gap-1"
+                className="flex gap-2 md:gap-3 items-center justify-center h-16"
               >
-                {Array(5).fill(0).map((_, i) => (
-                  <IconStarFilled
-                    key={i}
-                    className="w-10 h-10 text-[var(--accent)] hover:scale-110 transition-transform cursor-pointer"
-                  />
-                ))}
+                {/* Star 1 */}
+                <motion.div whileHover={{ scale: 1.2, rotate: -15 }} transition={{ type: "spring", stiffness: 400 }}>
+                  <IconStarFilled className="w-10 h-10 md:w-12 md:h-12 text-[var(--accent)] cursor-pointer drop-shadow-md" />
+                </motion.div>
+
+                {/* Star 2 */}
+                <motion.div whileHover={{ scale: 1.2, rotate: -5 }} transition={{ type: "spring", stiffness: 400 }}>
+                  <IconStarFilled className="w-10 h-10 md:w-12 md:h-12 text-[var(--accent)] cursor-pointer drop-shadow-md" />
+                </motion.div>
+
+                {/* Star 3 */}
+                <motion.div whileHover={{ scale: 1.2, rotate: 0 }} transition={{ type: "spring", stiffness: 400 }}>
+                  <IconStarFilled className="w-10 h-10 md:w-12 md:h-12 text-[var(--accent)] cursor-pointer drop-shadow-md" />
+                </motion.div>
+
+                {/* Star 4 - Actively prompting */}
+                <motion.div
+                  animate={{
+                    scale: [1, 1.25, 1],
+                    rotate: [0, -15, 15, -15, 0]
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "easeInOut",
+                    repeatDelay: 1
+                  }}
+                  whileHover={{ scale: 1.3, rotate: 0 }}
+                  className="relative z-20 flex items-center justify-center w-12 h-12 md:w-16 md:h-16"
+                >
+                  <IconStar className="absolute w-12 h-12 md:w-14 md:h-14 text-[var(--accent)] cursor-pointer drop-shadow-[0_0_12px_rgba(255,200,0,0.9)]" stroke={2} />
+                  <IconStarFilled className="absolute w-12 h-12 md:w-14 md:h-14 text-[var(--accent)] opacity-40 cursor-pointer animate-pulse" />
+                </motion.div>
+
+                {/* Star 5 - Glowing slightly */}
+                <motion.div
+                  animate={{
+                    filter: [
+                      "drop-shadow(0px 0px 0px rgba(255,180,0,0))",
+                      "drop-shadow(0px 0px 8px rgba(255,180,0,0.8))",
+                      "drop-shadow(0px 0px 0px rgba(255,180,0,0))"
+                    ]
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1.25
+                  }}
+                  whileHover={{ scale: 1.2, filter: "drop-shadow(0px 0px 12px rgba(255, 180, 0, 1))" }}
+                >
+                  <IconStar className="w-10 h-10 md:w-12 md:h-12 text-[var(--accent)] opacity-90 cursor-pointer" stroke={1.5} />
+                </motion.div>
               </a>
             </div>
 
-            <p className="text-sm text-gray-200">
+            <p className="text-sm text-gray-200/80 font-light">
               Your review helps others find quality tree services they can trust.
             </p>
           </div>
