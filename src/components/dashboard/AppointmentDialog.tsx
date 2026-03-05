@@ -34,7 +34,7 @@ export function AppointmentDialog({ isOpen, onClose, appointment, serviceTypes, 
         customer_phone: "",
         service_type_id: serviceTypes[0]?.id || 0,
         start_time: new Date().toISOString().slice(0, 16),
-        status: "confirmed",
+        status: "quote",
         notes: "",
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,7 +52,7 @@ export function AppointmentDialog({ isOpen, onClose, appointment, serviceTypes, 
                 customer_phone: "",
                 service_type_id: serviceTypes[0]?.id || 0,
                 start_time: new Date().toISOString().slice(0, 16),
-                status: "confirmed",
+                status: "quote",
                 notes: "",
             });
         }
@@ -117,13 +117,13 @@ export function AppointmentDialog({ isOpen, onClose, appointment, serviceTypes, 
                                 </select>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-sm font-semibold text-gray-700">Email</label>
+                                <label className="text-sm font-semibold text-gray-700">Email <span className="text-gray-400 font-normal">(optional)</span></label>
                                 <input
                                     type="email"
-                                    value={formData.customer_email}
+                                    value={formData.customer_email ?? ""}
                                     onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[var(--primary)] outline-none"
-                                    required
+                                    placeholder="Leave blank if phone only"
                                 />
                             </div>
                             <div className="space-y-1">
@@ -153,9 +153,12 @@ export function AppointmentDialog({ isOpen, onClose, appointment, serviceTypes, 
                                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[var(--primary)] outline-none"
                                 >
+                                    <option value="quote">Quote</option>
+                                    <option value="meeting">Meeting</option>
+                                    <option value="invoice">Invoice</option>
                                     <option value="confirmed">Confirmed</option>
-                                    <option value="cancelled">Cancelled</option>
                                     <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
                                 </select>
                             </div>
                         </div>

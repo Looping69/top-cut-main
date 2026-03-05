@@ -106,30 +106,54 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
     const [form, setForm] = useState({
         customer_name: doc?.customer_name ?? "",
         customer_email: doc?.customer_email ?? "",
+        customer_phone: (doc as any)?.customer_phone ?? "",
         customer_address: doc?.customer_address ?? "",
-        tax_rate_percent: doc?.tax_rate_percent ?? 15,
+        tax_rate_percent: doc?.tax_rate_percent ?? 0, // 0 = no VAT by default; user can set 15
         due_date: (doc as Invoice)?.due_date ?? "",
         valid_until: (doc as Quotation)?.valid_until ?? "",
         notes: doc?.notes ?? "",
     });
-    const [items, setItems] = useState<LineItem[]>(doc?.line_items?.length ? doc.line_items : [{ ...EMPTY_LINE }]);
+    // items stored internally in RANDS (not cents) for display; convert on submit
+    const [items, setItems] = useState<(Omit<LineItem, 'unit_price_cents'> & { unit_price_rands: number })[]>(
+        doc?.line_items?.length
+            ? doc.line_items.map(li => ({ ...li, unit_price_rands: li.unit_price_cents / 100 }))
+            : [{ description: "", qty: 1, unit_price_rands: 0 }]
+    );
 
-    const subtotal = items.reduce((s, li) => s + li.qty * li.unit_price_cents, 0);
-    const tax = Math.round(subtotal * (form.tax_rate_percent / 100));
-    const total = subtotal + tax;
+    const subtotal_rands = items.reduce((s, li) => s + li.qty * li.unit_price_rands, 0);
+    const tax_rands = Math.round(subtotal_rands * (form.tax_rate_percent / 100) * 100) / 100;
+    const total_rands = subtotal_rands + tax_rands;
 
-    const setItem = (i: number, field: keyof LineItem, val: string | number) =>
+    const setItem = (i: number, field: "description" | "qty" | "unit_price_rands", val: string | number) =>
         setItems(prev => prev.map((it, idx) => idx === i ? { ...it, [field]: field === "description" ? val : Number(val) } : it));
 
     const submit = async () => {
         setSaving(true);
         try {
+            // Convert rands back to cents for the backend
+            const line_items: LineItem[] = items.map(li => ({
+                description: li.description,
+                qty: li.qty,
+                unit_price_cents: Math.round(li.unit_price_rands * 100),
+            }));
             await onSave({
                 ...form,
-                line_items: items,
+                line_items,
                 ...(doc ? { id: doc.id } : {}),
             });
         } finally { setSaving(false); }
+    };
+
+    const handleWhatsApp = async () => {
+        if (!doc) return;
+        try {
+            const endpoint = isInvoice ? `/invoices/${doc.id}/whatsapp` : `/quotations/${doc.id}/whatsapp`;
+            const { encoreFetch } = await import("@/lib/encore");
+            const result = await encoreFetch(endpoint);
+            window.open(result.whatsapp_url, "_blank");
+        } catch {
+            alert("Save the document first before sending via WhatsApp.");
+        }
     };
 
     const invoiceStatuses = ["draft", "sent", "paid", "overdue", "cancelled"];
@@ -162,7 +186,7 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
                             { label: "Customer Name", field: "customer_name", type: "text" },
-                            { label: "Email", field: "customer_email", type: "email" },
+                            { label: "Email (optional)", field: "customer_email", type: "email" },
                         ].map(({ label, field, type }) => (
                             <div key={field}>
                                 <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">{label}</label>
@@ -171,7 +195,14 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
                                     className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent" />
                             </div>
                         ))}
-                        <div className="sm:col-span-2">
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Phone (for WhatsApp)</label>
+                            <input type="tel" value={form.customer_phone}
+                                onChange={e => setForm(f => ({ ...f, customer_phone: e.target.value }))}
+                                placeholder="+27 78 874 7327"
+                                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent" />
+                        </div>
+                        <div className="sm:col-span-1">
                             <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Address</label>
                             <input type="text" value={form.customer_address}
                                 onChange={e => setForm(f => ({ ...f, customer_address: e.target.value }))}
@@ -184,7 +215,7 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
                     <div>
                         <div className="flex items-center justify-between mb-3">
                             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Line Items</label>
-                            <button onClick={() => setItems(i => [...i, { ...EMPTY_LINE }])}
+                            <button onClick={() => setItems(i => [...i, { description: "", qty: 1, unit_price_rands: 0 }])}
                                 className="flex items-center gap-1 text-xs font-bold text-[var(--primary)] hover:underline">
                                 <IconPlus size={14} /> Add row
                             </button>
@@ -193,7 +224,7 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
                             <div className="grid grid-cols-12 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
                                 <span className="col-span-6">Description</span>
                                 <span className="col-span-2 text-center">Qty</span>
-                                <span className="col-span-3 text-right">Unit Price</span>
+                                <span className="col-span-3 text-right">Unit Price (R)</span>
                                 <span className="col-span-1" />
                             </div>
                             {items.map((li, i) => (
@@ -203,9 +234,9 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
                                         onChange={e => setItem(i, "description", e.target.value)} />
                                     <input type="number" min={1} className="col-span-2 bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
                                         value={li.qty} onChange={e => setItem(i, "qty", e.target.value)} />
-                                    <input type="number" min={0} className="col-span-3 bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
-                                        placeholder="cents" value={li.unit_price_cents}
-                                        onChange={e => setItem(i, "unit_price_cents", e.target.value)} />
+                                    <input type="number" min={0} step={0.01} className="col-span-3 bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+                                        placeholder="e.g. 1200" value={li.unit_price_rands || ""}
+                                        onChange={e => setItem(i, "unit_price_rands", e.target.value)} />
                                     <button onClick={() => setItems(items.filter((_, idx) => idx !== i))}
                                         className="col-span-1 flex justify-center text-gray-300 hover:text-red-400 transition-colors">
                                         <IconX size={16} />
@@ -213,14 +244,14 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
                                 </div>
                             ))}
                             <div className="px-4 py-3 bg-white border-t-2 border-dashed border-gray-200 text-sm text-right space-y-0.5">
-                                <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>{fmtR(subtotal)}</span></div>
+                                <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>R {subtotal_rands.toFixed(2)}</span></div>
                                 <div className="flex justify-between text-gray-500 items-center gap-2">
                                     <span>VAT <input type="number" value={form.tax_rate_percent} onChange={e => setForm(f => ({ ...f, tax_rate_percent: Number(e.target.value) }))}
                                         className="w-12 text-center border border-gray-200 rounded px-1 text-xs" />%</span>
-                                    <span>{fmtR(tax)}</span>
+                                    <span>R {tax_rands.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between font-black text-gray-900 text-base pt-1 border-t border-gray-100 mt-1">
-                                    <span>Total</span><span>{fmtR(total)}</span>
+                                    <span>Total</span><span>R {total_rands.toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>
@@ -270,6 +301,14 @@ function DocModal({ type, doc, onClose, onSave, onConvert, onStatusChange }: {
                             <button onClick={() => onConvert(doc.id)}
                                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-bold transition-colors">
                                 <IconArrowRight size={16} /> Convert to Invoice
+                            </button>
+                        )}
+                        {doc && (
+                            <button
+                                onClick={handleWhatsApp}
+                                title="Send via WhatsApp"
+                                className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl text-sm font-bold transition-colors">
+                                📱 WhatsApp
                             </button>
                         )}
                     </div>
