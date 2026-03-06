@@ -83,23 +83,23 @@ const testimonials = [
 
 export function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   const nextTestimonial = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
-  
+
   const prevTestimonial = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
   };
-  
+
   const renderStars = (rating: number) => {
     return Array(5).fill(0).map((_, i) => (
-      i < rating 
-        ? <IconStarFilled key={i} className="text-[var(--accent)] w-5 h-5" /> 
+      i < rating
+        ? <IconStarFilled key={i} className="text-[var(--accent)] w-5 h-5" />
         : <IconStar key={i} className="text-gray-300 w-5 h-5" />
     ));
   };
-  
+
   return (
     <section className="section bg-green-light">
       <Container>
@@ -111,20 +111,20 @@ export function Testimonials() {
             viewport={{ once: true }}
             transition={{ duration: 0.3 }}
           >
-            <span className="bg-[var(--accent)] text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wider">Testimonials</span>
+            <span className="bg-[var(--accent)] text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wider">Reviews</span>
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             className="text-3xl md:text-4xl font-bold mb-4 text-[var(--primary-dark)]"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            What Our Clients Say
+            What Our Clients Say about Our Service
           </motion.h2>
-          
-          <motion.p 
+
+          <motion.p
             className="text-gray-700 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -134,16 +134,16 @@ export function Testimonials() {
             Don&apos;t just take our word for it. Here&apos;s what our satisfied customers have to say about our tree services.
           </motion.p>
         </div>
-        
+
         <div className="relative max-w-4xl mx-auto">
           <div className="overflow-hidden rounded-xl">
-            <div 
+            <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
             >
               {testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="w-full flex-shrink-0 px-4">
-                  <motion.div 
+                  <motion.div
                     className="testimonial-card"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -158,9 +158,9 @@ export function Testimonials() {
                         {renderStars(testimonial.rating)}
                       </div>
                     </div>
-                    
+
                     <p className="text-gray-700 text-lg mb-6 italic">&quot;{testimonial.quote}&quot;</p>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <div className="w-14 h-14 bg-[var(--primary)] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
@@ -180,38 +180,37 @@ export function Testimonials() {
               ))}
             </div>
           </div>
-          
+
           {/* Navigation Buttons */}
-          <button 
+          <button
             onClick={prevTestimonial}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 md:-translate-x-6 bg-white p-3 rounded-full shadow-md hover:shadow-lg focus:outline-none z-10 text-[var(--primary)] hover:text-[var(--primary-dark)] transition-all focus-visible"
             aria-label="Previous testimonial"
           >
             <IconChevronLeft size={24} />
           </button>
-          <button 
+          <button
             onClick={nextTestimonial}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 md:translate-x-6 bg-white p-3 rounded-full shadow-md hover:shadow-lg focus:outline-none z-10 text-[var(--primary)] hover:text-[var(--primary-dark)] transition-all focus-visible"
             aria-label="Next testimonial"
           >
             <IconChevronRight size={24} />
           </button>
-          
+
           {/* Dots Indicator */}
           <div className="flex justify-center mt-8 space-x-2">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
-                className={`h-3 rounded-full transition-all focus-visible ${
-                  index === activeIndex ? 'bg-[var(--primary)] w-8' : 'bg-gray-300 hover:bg-gray-400 w-3'
-                }`}
+                className={`h-3 rounded-full transition-all focus-visible ${index === activeIndex ? 'bg-[var(--primary)] w-8' : 'bg-gray-300 hover:bg-gray-400 w-3'
+                  }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
           </div>
         </div>
-        
+
         <motion.div
           className="text-center mt-12"
           initial={{ opacity: 0, y: 20 }}
@@ -220,7 +219,7 @@ export function Testimonials() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <a href={GOOGLE_BUSINESS_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="btn-outline">
-            Read More Reviews
+            More Reviews on Google
           </a>
         </motion.div>
       </Container>

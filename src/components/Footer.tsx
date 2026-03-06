@@ -120,8 +120,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/testimonials" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                  <span className="text-[var(--accent)] mr-2">›</span> Testimonials
+                <Link href="/reviews" className="text-gray-300 hover:text-white transition-colors flex items-center">
+                  <span className="text-[var(--accent)] mr-2">›</span> Reviews
                 </Link>
               </li>
               <li>

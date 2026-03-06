@@ -77,22 +77,22 @@ const testimonials = [
     quote: "Baie professioneel en netjies gewerk. Ek beveel Top Cut aan vir enige boomwerk!",
     service: "Boomwerk",
   },
- 
+
 ];
 
-export default function TestimonialsPage() {
+export default function ReviewsPage() {
   return (
     <>
       <div className="py-16 md:py-24">
         <Container>
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">Customer Testimonials</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">Customer Reviews</h1>
               <p className="text-gray-600 max-w-2xl mx-auto">
                 Don&apos;t just take our word for it. Here&apos;s what our satisfied customers have to say about our tree services.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
               {testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="bg-white p-6 rounded-lg shadow-md">
@@ -111,14 +111,14 @@ export default function TestimonialsPage() {
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start mb-4">
                     <IconQuote size={24} className="text-primary/20 mr-2 flex-shrink-0 mt-1" />
                     <p className="text-gray-700">
                       {testimonial.quote}
                     </p>
                   </div>
-                  
+
                   <div className="flex justify-between items-center text-sm text-gray-500 mt-4 pt-4 border-t border-gray-100">
                     <span>Service: {testimonial.service}</span>
                     <span>{testimonial.date}</span>
@@ -126,7 +126,7 @@ export default function TestimonialsPage() {
                 </div>
               ))}
             </div>
-            
+
             <div className="bg-green-light p-8 rounded-lg text-center">
               <h2 className="text-2xl font-bold mb-4">Ready to Experience Our Service?</h2>
               <p className="text-gray-600 mb-6">
@@ -144,7 +144,7 @@ export default function TestimonialsPage() {
           </div>
         </Container>
       </div>
-      
+
       <CallToAction />
     </>
   );
