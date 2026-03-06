@@ -119,13 +119,13 @@ export default function ContactPage() {
 
                   <div>
                     <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-                      Your Email
+                      Email <span className="text-gray-400 font-normal text-sm">(optional)</span>
                     </label>
                     <input
                       type="email"
                       id="email"
                       name="email"
-                      required
+                      placeholder="Leave blank if phone only"
                       className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
@@ -133,12 +133,14 @@ export default function ContactPage() {
 
                 <div className="mb-6">
                   <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">
-                    Phone Number
+                    Phone / WhatsApp <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
                     id="phone"
                     name="phone"
+                    required
+                    placeholder="+27 78 874 7327"
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
