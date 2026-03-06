@@ -9,6 +9,7 @@ export function Footer() {
   const pathname = usePathname();
   const currentYear = new Date().getFullYear();
 
+  // Ensure footer reflects latest link name (Reviews)
   if (pathname?.startsWith("/dashboard")) return null;
 
   return (
